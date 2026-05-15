@@ -46,7 +46,7 @@ public class BaseTest {
         }
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-//        iTestContext.setAttribute("driver", driver);
+        iTestContext.setAttribute("driver", driver);
     }
 
     @AfterMethod(alwaysRun = true)

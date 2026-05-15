@@ -7,13 +7,17 @@ import pages.NewAccountPage;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Старый тест создания аккаунта, установлено enabled = false
+ * Актуальный тест создания аккаунта CreateAccountTest
+ */
 public class NewAccountTest extends BaseTest{
     Account account = new Account("Ivan", "+79991231212", "+74991231212",
             "example.com", "Quality Street", "Investor", "Banking");
     Account account1 = new Account("John", "+79991231212", "+74991231212",
             "example.com", "Quality Street", "Investor", "Banking");
 
-    @Test
+    @Test(enabled = false)
     public void checkAddNewAccount() throws InterruptedException {
         driver.get("https://demo.suiteondemand.com/index.php?action=Login&module=Users");
         driver.findElement(By.id("user_name")).sendKeys("will");

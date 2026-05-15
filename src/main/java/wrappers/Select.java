@@ -3,8 +3,10 @@ package wrappers;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+/**
+ * Wrapper для Select
+ */
 public class Select {
-
     WebDriver driver;
     String label;
 
@@ -15,7 +17,8 @@ public class Select {
 
     public void select(String option) {
         driver.findElement
-                (By.xpath(String.format("//*[contains(text(), '%s')]/following-sibling::div//select", label))).click();
+                (By.xpath(String.format("//*[contains(text(), '%s')]/following-sibling::div//select",
+                        label))).click();
         driver.findElement
                 (By.xpath(String.format("//*[contains(text(), '%s')]/following-sibling::div//option[contains(text(), '%s')]",
                         label, option))).click();
