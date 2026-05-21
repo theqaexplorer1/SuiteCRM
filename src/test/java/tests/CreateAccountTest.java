@@ -2,10 +2,12 @@ package tests;
 
 import dto.Account;
 import io.qameta.allure.*;
+import lombok.extern.log4j.Log4j2;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 
+@Log4j2
 @Epic("SuiteCRM")
 @Feature("Account Management")
 @Owner("ivan.ivanov")
@@ -21,31 +23,31 @@ public class CreateAccountTest extends BaseTest {
     @Owner("ivan.ivanov")
     @Link(name = "SuiteCRM", url = "https://demo.suiteondemand.com")
     public void testCreateAccount() {
+        log.info("Starting Create Account");
+        Account account = Account.builder()
+                .name("TestAccount_" + System.currentTimeMillis())
+                .phone("+79991112233")
+                .fax("+74991112233")
+                .website("example.com")
+                .billingStreet("Lenina st, 50")
+                .billingCity("Moscow")
+                .billingState("Moscow")
+                .billingPostalCode("123456")
+                .billingCountry("Russia")
+                .shippingStreet("Lenina st, 50")
+                .shippingCity("Moscow")
+                .shippingState("Moscow")
+                .shippingPostalCode("123456")
+                .shippingCountry("Russia")
+                .type("Customer")
+                .industry("Technology")
+                .description("Auto created test account")
+                .emailOptedOut(true)
+                .emailInvalid(true)
+                .build();
 
-        //Value Object: используем ПОЛНЫЙ конструктор с чекбоксами
-        Account account = new Account(
-                "TestAccount_" + System.currentTimeMillis(),
-                "+79991112233",
-                "+74991112233",
-                "example.com",
-                "Lenina st, 10",
-                "Moscow",
-                "Moscow",
-                "123456",
-                "Russia",
-                "Lenina st, 10",
-                "Moscow",
-                "Moscow",
-                "123456",
-                "Russia",
-                "Customer",
-                "Technology",
-                "Auto-created",
-                true,
-                true
-        );
-
-        //Chain of Invocations + Loadable Page
+        log.debug("Created Account object: {}", account);
+        log.info("Starting login for account creation");
         String createdAccountName = new LoginPage(driver)
                 .open()
                 .login("will", "will")
@@ -53,9 +55,10 @@ public class CreateAccountTest extends BaseTest {
                 .fillAccountForm(account)
                 .save()
                 .getAccountName();
-
+        log.info("Created account name: '{}'", createdAccountName);
         // Проверка: сравниваем в верхнем регистре (SuiteCRM делает toUpperCase для name)
         Assert.assertEquals(createdAccountName.toUpperCase(), account.getName().toUpperCase(),
                 "Имя созданного аккаунта не совпадает с переданным в DTO");
+        log.info("Account created successfully");
     }
 }

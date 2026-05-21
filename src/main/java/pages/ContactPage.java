@@ -1,5 +1,6 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -7,6 +8,7 @@ import org.openqa.selenium.WebDriver;
  * Страница просмотра контакта (после создания).
  * Chain of Invocations + Loadable Page
  */
+@Log4j2
 public class ContactPage extends BasePage {
     // Уникальный элемент: заголовок с именем контакта
     private final By CONTACT_NAME = By.cssSelector("h2.module-title-text");
@@ -17,7 +19,6 @@ public class ContactPage extends BasePage {
 
     /**
      * Loadable Page: проверка, что мы на странице просмотра контакта.
-     * Уникальные признаки: заголовок с именем и module=Contacts в URL.
      */
     @Override
     public boolean isPageLoaded() {
@@ -26,6 +27,7 @@ public class ContactPage extends BasePage {
                     && driver.getCurrentUrl().contains("module=Contacts")
                     && driver.getCurrentUrl().contains("action=DetailView");
         } catch (Exception e) {
+            log.warn("ContactPage not loaded: {}", e.getMessage());
             return false;
         }
     }
@@ -37,6 +39,7 @@ public class ContactPage extends BasePage {
      * @return эта же страница
      */
     public ContactPage open(String contactId) {
+        log.info("Open Contact page with ID: {}", contactId);
         openPage("/index.php?module=Contacts&action=DetailView&record=" + contactId);
         return this;
     }
@@ -47,7 +50,9 @@ public class ContactPage extends BasePage {
      * @return имя контакта Имя и Фамилия
      */
     public String getContactName() {
-        return driver.findElement(CONTACT_NAME).getText().trim();
+        String name = driver.findElement(CONTACT_NAME).getText().trim();
+        log.debug("Get contact name: '{}'", name);
+        return name;
     }
 
     /**

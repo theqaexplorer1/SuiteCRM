@@ -1,8 +1,10 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+@Log4j2
 public class LoginPage extends BasePage {
 
     private final By USERNAME_FIELD = By.id("user_name");
@@ -22,6 +24,7 @@ public class LoginPage extends BasePage {
             return driver.findElement(USERNAME_FIELD).isDisplayed()
                     && driver.getCurrentUrl().contains("action=Login");
         } catch (Exception e) {
+            log.warn("Page not loaded: {}", e.getMessage());
             return false;
         }
     }
@@ -31,6 +34,7 @@ public class LoginPage extends BasePage {
      * Chain of Invocations: возвращает this (остаёмся на LoginPage).
      */
     public LoginPage open() {
+        log.info("Open login page");
         openPage("/index.php?action=Login&module=Users");
         return this;
     }
@@ -39,6 +43,7 @@ public class LoginPage extends BasePage {
      * Chain of Invocations: после успешного логина возвращаем MainPage.
      */
     public MainPage login(String username, String password) {
+        log.info("Logging in as '{}'", username);
         driver.findElement(USERNAME_FIELD).sendKeys(username);
         driver.findElement(PASSWORD_FIELD).sendKeys(password);
         driver.findElement(LOGIN_BUTTON).click();

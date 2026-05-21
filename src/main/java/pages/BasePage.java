@@ -1,14 +1,15 @@
 package pages;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 /**
- * Базовый класс для всех страниц.
- * Реализует паттерн Loadable Page: гарантия, что страница загрузилась.
+ * Базовый класс для всех страниц. Loadable Page
  */
+@Log4j2
 public abstract class BasePage {
 
     protected final WebDriver driver;
@@ -31,9 +32,10 @@ public abstract class BasePage {
      * Открывает страницу по относительному URL и ждёт её полной загрузки.
      */
     protected void openPage(String relativeUrl) {
+        log.debug("Open page: {}{}", BASE_URL, relativeUrl);
         driver.get(BASE_URL + relativeUrl);
-        // Ждём, пока isPageLoaded() вернёт true (но не дольше 10 сек)
         wait.until(driver -> isPageLoaded());
+        log.info("Page loaded: {}", relativeUrl);
     }
 
     /**
